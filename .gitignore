@@ -3,3 +3,5 @@
 
 # terraform stuff
 terraform.tfstate
+.terraform.lock.hcl
+.terraform/
