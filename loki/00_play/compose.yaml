@@ -1,0 +1,48 @@
+---
+name: loki
+
+services:
+
+  # {{{ loki
+  loki:
+    image: grafana/loki:3.0.0
+    entrypoint:
+      - sleep
+      # - loki
+    command:
+      - infinity
+      # - -config.file=/loki.yaml
+    volumes:
+      - type: bind
+        source: ./loki.yaml
+        target: /loki.yaml
+        read_only: true
+  # }}}
+
+  # {{{ loki
+  promtail:
+    image: grafana/promtail:3.0.0
+    entrypoint:
+      - sleep
+      # - promtail
+    command:
+      - infinity
+      # - -config.file=/promtail.yaml
+      # - -print-config-stderr
+    volumes:
+      - type: bind
+        source: /var/lib/docker/containers
+        target: /var/lib/docker/containers
+        read_only: true
+      - type: bind
+        source: ./promtail.yaml
+        target: /promtail.yaml
+        read_only: true
+  # }}}
+
+  # {{{ grafana
+  grafana:
+    image: grafana/grafana:11.0.0
+    ports:
+      - 3001:3000
+  # }}}

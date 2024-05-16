@@ -1,0 +1,41 @@
+---
+auth_enabled: false
+tracing:
+  enabled: false
+analytics:
+  reporting_enabled: false
+
+server:
+  http_listen_port: 3100 # this is default, here just for reference
+  grpc_listen_port: 9095 # this is default, here just for reference
+
+common:
+  ring:
+    kvstore:
+      store: inmemory
+  replication_factor: 1
+  path_prefix: /tmp/loki
+
+schema_config:
+  configs:
+    - from: 2024-05-01
+      schema: v13
+      store: tsdb
+      object_store: filesystem
+      index:
+        prefix: index_
+        period: 24h
+
+### bare minimum ends here
+
+compactor:
+  retention_enabled: true
+  delete_request_store: filesystem
+
+limits_config:
+  retention_period: 7d
+  max_query_lookback: 7d
+
+ingester:
+  wal:
+    flush_on_shutdown: true
