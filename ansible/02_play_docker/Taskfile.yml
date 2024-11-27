@@ -7,10 +7,16 @@ tasks:
     cmds:
       - task --list
       #- task --list-all
+
   u:
     desc: up
     cmds:
       - docker compose up
+
+  ub:
+    desc: up --build
+    cmds:
+      - docker compose up --build
 
   d:
     desc: down
@@ -26,3 +32,8 @@ tasks:
     desc: remove images used by services
     cmds:
       - docker compose down -v --remove-orphans --rmi local
+
+  a:
+    desc: run ansible-playbook
+    cmds:
+      - docker compose exec ansible ansible-playbook playbook.yaml
