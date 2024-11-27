@@ -1,0 +1,15 @@
+---
+
+name: ansible-play
+
+services:
+
+  ansible:
+    build:
+      context: .
+    entrypoint:
+      - sleep
+    command:
+      - infinity
+    volumes:
+      - ${PWD}/src:/src
