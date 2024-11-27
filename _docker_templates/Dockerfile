@@ -1,1 +1,3 @@
 FROM debian:12.8
+ENTRYPOINT []
+CMD []

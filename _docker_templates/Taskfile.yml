@@ -1,0 +1,28 @@
+---
+version: '3'
+
+tasks:
+
+  default:
+    cmds:
+      - task --list
+      #- task --list-all
+  u:
+    desc: up
+    cmds:
+      - docker compose up
+
+  d:
+    desc: down
+    cmds:
+      - docker compose down -v --remove-orphans
+
+  e:
+    desc: exec
+    cmds:
+      - docker compose exec xyzzy bash
+
+  rmi:
+    desc: remove images used by services
+    cmds:
+      - docker compose down -v --remove-orphans --rmi local
