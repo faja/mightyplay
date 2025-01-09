@@ -1,0 +1,14 @@
+---
+version: '3'
+
+tasks:
+
+  default:
+    cmds:
+      - task --list
+
+  a:
+    desc: run ansible
+    dir: ./ansible
+    cmds:
+      - ansible all -m ping
