@@ -1,0 +1,43 @@
+---
+
+- include_tasks: platform_check.yaml
+
+- name: Install docker official GPG key
+  become: true
+  ansible.builtin.copy:
+    src: files/docker.asc
+    dest: /etc/apt/keyrings/docker.asc
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install docker APT source
+  become: true
+  ansible.builtin.template:
+    src: templates/docker.list.j2
+    dest: /etc/apt/sources.list.d/docker.list
+    owner: root
+    group: root
+    mode: '0644'
+  register: reg_docker_apt_source
+
+- name: Update APT cache
+  become: true
+  when: reg_docker_apt_source.changed
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install docker package
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 900  # 15mins
+    pkg:
+      - docker-ce
+
+- name: Start and enable docker service
+  become: true
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
