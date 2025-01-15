@@ -1,7 +1,5 @@
 ---
 
-- include_tasks: platform_check.yaml
-
 - name: Install docker official GPG key
   become: true
   ansible.builtin.copy:

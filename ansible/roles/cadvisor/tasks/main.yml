@@ -1,0 +1,33 @@
+---
+
+- import_tasks: platform_check.yaml
+
+- name: Create cadvisor directory
+  become: true
+  ansible.builtin.file:
+    path: /var/lib/docker-compose/cadvisor
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+
+- name: Install compose.yaml
+  become: true
+  ansible.builtin.template:
+    src: templates/compose.yaml.j2
+    dest: /var/lib/docker-compose/cadvisor/compose.yaml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Pull an image
+  become: true
+  community.docker.docker_image_pull:
+    name: "{{ cadvisor_image_name }}"
+    tag: "{{ cadvisor_image_tag }}"
+    pull: not_present
+
+- name: Run `docker compose up`
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: /var/lib/docker-compose/cadvisor

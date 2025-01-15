@@ -1,0 +1,10 @@
+---
+
+- name: Create docker-compose directory
+  become: true
+  ansible.builtin.file:
+    path: /var/lib/docker-compose
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'

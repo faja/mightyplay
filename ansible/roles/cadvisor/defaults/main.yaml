@@ -1,0 +1,32 @@
+---
+cadvisor_image_name: gcr.io/cadvisor/cadvisor
+cadvisor_image_tag: v0.49.2  # 2024.03.02 # https://github.com/google/cadvisor/releases
+cadvisor_port: 9110
+
+# cadvisor command options
+cadvisor_container_labels:
+  - stack
+
+# https://github.com/google/cadvisor/blob/master/container/factory.go#L47-L69
+cadvisor_disabled_metrics:
+  - advtcp             # disabling # not sure if this is something we wanna look at, pretty advanced stuff
+  # - app              # invalid option, can't be disabled
+  # - cpu              # invalid option, can't be disabled
+  # - cpuLoad          # invalid option, can't be disabled
+  - cpu_topology       # disabling # not sure what it gives us
+  # - cpuset           # invalid option, can't be disabled
+  # - disk             # ENABLING, filesystem usage and inodes stuff
+  # - diskIO           # ENABLING, number of reads and writes
+  - hugetlb            # disabling # hube pages stuff, we do not need this
+  # - memory           # invalid option, can't be disabled
+  - memory_numa        # disabling # number of numa pages per node, we do not need this
+  # - network          # ENABLING, received and transmit stats
+  # - oom_event        # invalid option, can't be disabled
+  - percpu             # disabling # we do not need per cpu stats, "total" is fine
+  # - perf_event       # invalid option, can't be disabled
+  # - process          # ENABLING, gives us number of processes, threads, sockets, fds inside the container
+  - referenced_memory  # disabling # no idea what it is
+  - resctrl            # disabling # no idea what it is
+  # - sched            # ENABLING, runqueue related information, eg: how long porcess was waiting for CPU
+  # - tcp              # ENABLING, tcp state stats, eg: number of established connections
+  # - udp              # ENABLING, udp stats

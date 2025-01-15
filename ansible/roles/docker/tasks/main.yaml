@@ -1,0 +1,5 @@
+---
+
+- import_tasks: platform_check.yaml
+- import_tasks: docker.yaml
+- import_tasks: docker-compose.yaml

@@ -1,0 +1,31 @@
+---
+name: cadvisor
+services:
+  cadvisor:
+    container_name: cadvisor
+    image: {{ cadvisor_image_name }}:{{ cadvisor_image_tag }}
+    entrypoint:
+      - cadvisor
+    command:
+      - -logtostderr
+      - -docker_only=true
+      - -store_container_labels=false
+      - -whitelisted_container_labels={{ cadvisor_container_labels | join(",") }}
+      - disable_metrics={{ cadvisor_disabled_metrics | join(",") }}
+    restart: unless-stopped
+    privileged: true
+    pid: host  # to get process and fd stats
+    logging:
+      options:
+        tag: "{{ "{{ .Name }}" }}"
+        labels: stack
+    ports:
+      - {{ cadvisor_port }}:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    labels:
+      stack: cadvisor
