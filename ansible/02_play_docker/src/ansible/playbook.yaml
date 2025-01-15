@@ -2,39 +2,13 @@
 - name: my firsy play
   gather_facts: false
   hosts: all
-  vars:
-    ssh_deploy_instances:
-      frontend:
-        ip: 1.1.1.1
-        port: 2202
-      consumer:
-        ip: 2.2.2.2
-        port: 2203
 
   tasks:
-    - name: test task
-      ansible.builtin.debug:
-        msg: get me first {{ my_list_non_existing | default("@xx") }}
+    - name: test template
+      ansible.builtin.template:
+        src: templates/test.yaml.j2
+        dest: /tmp/test.yaml
       vars:
-        my_list:
-          - I'm the first
-          - I'm second
-
-    - name: xxx
-      ansible.builtin.debug:
-        msg: test {{ groups }}
-      tags:
-        - only_this
-        - but_also_this
-
-    - debug: var=inventory_hostname
-
-  pre_tasks:
-    - name: pre task 1
-      debug:
-        msg: pre task 1
-
-  post_tasks:
-    - name: post task 1
-      debug:
-        msg: post task 1
+        test_xxx:
+          - a
+          - b

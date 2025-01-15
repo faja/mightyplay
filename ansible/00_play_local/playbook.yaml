@@ -1,0 +1,19 @@
+---
+
+### to run:
+# ansible-playbook -i 'localhost,' playbook.yaml
+
+- name: my firsy play
+  gather_facts: false
+  hosts: all
+  vars:
+    xxx: ok
+
+  tasks:
+    - name: task 1
+      ansible.builtin.debug:
+        msg: all at once {{ xxx }}
+
+    - name: task 2
+      ansible.builtin.debug:
+        msg: one at a  time

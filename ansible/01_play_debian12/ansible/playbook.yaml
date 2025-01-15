@@ -6,3 +6,5 @@
 
   roles:
     - role: docker
+    - role: cadvisor
+      tags: cadvisor
