@@ -1,0 +1,4 @@
+---
+prometheus_image_name: prom/prometheus
+prometheus_image_tag: v3.1.0  # 2025.01.02 # https://github.com/prometheus/prometheus/releases
+prometheus_port: 9090

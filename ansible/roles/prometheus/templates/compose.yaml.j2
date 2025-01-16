@@ -1,0 +1,29 @@
+---
+name: prometheus
+services:
+  prometheus:
+    container_name: prometheus
+    image: {{ prometheus_image_name }}:{{ prometheus_image_tag }}
+    entrypoint:
+      - prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
+      - --storage.tsdb.path=/var/lib/prometheus
+      - --storage.tsdb.retention.time=30d
+      #- --web.external-url=...
+      #- --web.console.libraries=/usr/share/prometheus/console_libraries
+      #- --web.console.templates=/usr/share/prometheus/consoles
+    restart: unless-stopped
+    logging:
+      options:
+        tag: "{{ "{{ .Name }}" }}"
+        labels: stack
+    ports:
+      - {{ prometheus_port }}:9090
+    volumes:
+      - /etc/prometheus/:/etc/prometheus/:ro
+      - /var/lib/prometheus:/var/lib/prometheus:rw
+    labels:
+      stack: prometheus
+    user: root # todo
+    # todo user:group

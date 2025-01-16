@@ -8,3 +8,5 @@
     - role: docker
     - role: cadvisor
       tags: cadvisor
+    - role: prometheus
+      tags: prometheus

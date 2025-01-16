@@ -1,0 +1,46 @@
+---
+
+- import_tasks: platform_check.yaml
+
+- name: Create prometheus directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+  with_items:
+    - /etc/prometheus
+    - /var/lib/prometheus
+    - /var/lib/docker-compose/prometheus
+
+- name: Install prometheus.yaml
+  become: true
+  ansible.builtin.template:
+    src: templates/prometheus.yaml.j2
+    dest: /etc/prometheus/prometheus.yaml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install compose.yaml
+  become: true
+  ansible.builtin.template:
+    src: templates/compose.yaml.j2
+    dest: /var/lib/docker-compose/prometheus/compose.yaml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Pull an image
+  become: true
+  community.docker.docker_image_pull:
+    name: "{{ prometheus_image_name }}"
+    tag: "{{ prometheus_image_tag }}"
+    pull: not_present
+
+- name: Run `docker compose up`
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: /var/lib/docker-compose/prometheus
