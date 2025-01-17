@@ -2,13 +2,33 @@
 
 - import_tasks: platform_check.yaml
 
+- name: Create prometheus group
+  become: true
+  ansible.builtin.group:
+    name: prometheus
+    state: present
+    gid: "{{ prometheus_gid }}"
+    system: true
+
+- name: Create prometheus user
+  become: true
+  ansible.builtin.user:
+    name: prometheus
+    state: present
+    uid: "{{ prometheus_uid }}"
+    group: prometheus
+    create_home: false
+    home: /var/lib/prometheus
+    shell: /user/sbin/nologin
+    system: true
+
 - name: Create prometheus directory
   become: true
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    owner: root
-    group: root
+    owner: prometheus
+    group: prometheus
     mode: '0750'
   with_items:
     - /etc/prometheus
@@ -20,8 +40,8 @@
   ansible.builtin.template:
     src: templates/prometheus.yaml.j2
     dest: /etc/prometheus/prometheus.yaml
-    owner: root
-    group: root
+    owner: prometheus
+    group: prometheus
     mode: '0644'
 
 - name: Install compose.yaml
@@ -29,8 +49,8 @@
   ansible.builtin.template:
     src: templates/compose.yaml.j2
     dest: /var/lib/docker-compose/prometheus/compose.yaml
-    owner: root
-    group: root
+    owner: prometheus
+    group: prometheus
     mode: '0644'
 
 - name: Pull an image

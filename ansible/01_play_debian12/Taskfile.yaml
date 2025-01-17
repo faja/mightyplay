@@ -12,3 +12,11 @@ tasks:
     dir: ./ansible
     cmds:
       - ansible-playbook playbook.yaml
+
+  at:
+    desc: run ansible with --tags option
+    dir: ./ansible
+    cmds:
+      - ansible-playbook --tags {{.TAG}} playbook.yaml
+    requires:
+      vars: [TAG]
