@@ -1,0 +1,4 @@
+- name: task 1
+  ansible.builtin.debug:
+    msg: task1 {{ item }}
+      #msg: task1

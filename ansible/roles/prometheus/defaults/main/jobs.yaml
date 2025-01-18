@@ -1,0 +1,8 @@
+---
+prometheus_jobs:
+  cadvisor:
+    ansible_group: all
+    port: 9110
+  grafana:
+    ansible_group: all
+    port: 42069

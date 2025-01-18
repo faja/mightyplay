@@ -4,3 +4,4 @@ prometheus_image_tag: v3.1.0  # 2025.01.02 # https://github.com/prometheus/prome
 prometheus_port: 9090
 prometheus_uid: 900
 prometheus_gid: 900
+#prometheus_jobs: {} # see jobs.yaml

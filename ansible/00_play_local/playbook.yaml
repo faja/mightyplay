@@ -1,19 +1,40 @@
 ---
 
 ### to run:
+# ansible-playbook playbook.yaml
+#   or
 # ansible-playbook -i 'localhost,' playbook.yaml
 
 - name: my firsy play
   gather_facts: false
   hosts: all
   vars:
-    xxx: ok
+    prometheus_targets:
+      cadvisor:
+        port: 9110
+        ansible_group: ungrouped
 
   tasks:
     - name: task 1
       ansible.builtin.debug:
-        msg: all at once {{ xxx }}
+        msg: |
+          processing item: {{ target.key }}
+          group: {{ target.value.ansible_group }}
+          groups: {{ groups[target.value.ansible_group] }}
+      with_dict: "{{ prometheus_targets }}"
+      loop_control:
+        loop_var: target
+        label: "{{ target.key }}"
+      vars:
+        prometheus_targets:
+          grafana:
+            port: 42069
+            ansible_group: all
 
-    - name: task 2
-      ansible.builtin.debug:
-        msg: one at a  time
+    #- name: task 1
+    #  ansible.builtin.debug:
+    #    msg: |
+    #      groups: {{ groups[ggg.xxx] }}
+    #  vars:
+    #    ggg:
+    #      xxx: all

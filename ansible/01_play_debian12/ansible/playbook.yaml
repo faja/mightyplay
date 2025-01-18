@@ -4,6 +4,9 @@
   become: false
   gather_facts: true
 
+    #vars:
+    #  prometheus_targets:
+
   roles:
     - role: docker
     - role: cadvisor

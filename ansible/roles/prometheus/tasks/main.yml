@@ -48,13 +48,16 @@
 
 - name: Install file SD config files
   become: true
-  tags: xxx
   ansible.builtin.template:
     src: templates/targets.yaml.j2
-    dest: /etc/prometheus/file_sd_configs/cadvisor.yaml
+    dest: /etc/prometheus/file_sd_configs/{{ job.key }}.yaml
     owner: prometheus
     group: prometheus
     mode: '0644'
+  with_dict: "{{ prometheus_jobs }}"
+  loop_control:
+    loop_var: job
+    label: "{{ job.key }}"
   notify: prometheus_config_reload
 
 - name: Install compose.yaml

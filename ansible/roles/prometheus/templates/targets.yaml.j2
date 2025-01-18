@@ -1,8 +1,8 @@
 ---
 # TODO: add some logic for eth0 vs eth1
+{% for host in groups[job.value.ansible_group] %}
 - targets:
-{% for host in groups.all %}
-    - {{ hostvars[host].ansible_eth1.ipv4.address }}:9110
+  - {{ hostvars[host].ansible_eth1.ipv4.address }}:{{ job.value.port }}
   labels:
-    nodename: {{ ansible_fqdn }}
+    nodename: {{ hostvars[host].ansible_fqdn }}
 {% endfor %}
