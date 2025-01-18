@@ -32,6 +32,7 @@
     mode: '0750'
   with_items:
     - /etc/prometheus
+    - /etc/prometheus/file_sd_configs
     - /var/lib/prometheus
     - /var/lib/docker-compose/prometheus
 
@@ -43,6 +44,18 @@
     owner: prometheus
     group: prometheus
     mode: '0644'
+  notify: prometheus_config_reload
+
+- name: Install file SD config files
+  become: true
+  tags: xxx
+  ansible.builtin.template:
+    src: templates/targets.yaml.j2
+    dest: /etc/prometheus/file_sd_configs/cadvisor.yaml
+    owner: prometheus
+    group: prometheus
+    mode: '0644'
+  notify: prometheus_config_reload
 
 - name: Install compose.yaml
   become: true

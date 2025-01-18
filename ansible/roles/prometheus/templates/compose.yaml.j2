@@ -11,8 +11,6 @@ services:
       - --storage.tsdb.path=/var/lib/prometheus
       - --storage.tsdb.retention.time=30d
       #- --web.external-url=...
-      #- --web.console.libraries=/usr/share/prometheus/console_libraries
-      #- --web.console.templates=/usr/share/prometheus/consoles
     user: {{ prometheus_uid }}:{{ prometheus_gid }}
     restart: unless-stopped
     logging:

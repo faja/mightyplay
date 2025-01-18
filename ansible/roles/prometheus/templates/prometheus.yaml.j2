@@ -8,3 +8,8 @@ scrape_configs:
     static_configs:
       - targets:
         - 127.0.0.1:9090
+
+  - job_name: cadvisor
+    file_sd_configs:
+      - files:
+          - /etc/prometheus/file_sd_configs/cadvisor.yaml
