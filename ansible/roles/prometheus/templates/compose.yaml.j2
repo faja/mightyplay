@@ -1,9 +1,16 @@
 ---
 name: prometheus
+
+networks:
+  prometheus:
+    name: prometheus
+
 services:
   prometheus:
     container_name: prometheus
     image: {{ prometheus_image_name }}:{{ prometheus_image_tag }}
+    restart: unless-stopped
+    user: {{ prometheus_uid }}:{{ prometheus_gid }}
     entrypoint:
       - prometheus
     command:
@@ -11,16 +18,16 @@ services:
       - --storage.tsdb.path=/var/lib/prometheus
       - --storage.tsdb.retention.time=30d
       #- --web.external-url=...
-    user: {{ prometheus_uid }}:{{ prometheus_gid }}
-    restart: unless-stopped
-    logging:
-      options:
-        tag: "{{ "{{ .Name }}" }}"
-        labels: stack
+    networks:
+      - prometheus
     ports:
       - {{ prometheus_port }}:9090
     volumes:
       - /etc/prometheus/:/etc/prometheus/:ro
       - /var/lib/prometheus:/var/lib/prometheus:rw
+    logging:
+      options:
+        tag: "{{ "{{ .Name }}" }}"
+        labels: stack
     labels:
       stack: prometheus
