@@ -13,3 +13,5 @@
       tags: cadvisor
     - role: prometheus
       tags: prometheus
+    - role: grafana
+      tags: grafana
