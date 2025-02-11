@@ -29,6 +29,7 @@
           cluster-enabled yes
           cluster-config-file /var/lib/redis/nodes.conf
           cluster-node-timeout 3000
+          enable-debug-command local
         dest: /var/lib/redis/redis.conf
         owner: root
         group: root
