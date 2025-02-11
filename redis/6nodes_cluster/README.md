@@ -1,3 +1,9 @@
+### start playing
+
+```sh
+vagrant up
+task a
+```
 
 ### redis ruby test scripts
 
