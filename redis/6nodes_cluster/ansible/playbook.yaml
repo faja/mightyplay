@@ -1,0 +1,35 @@
+---
+- name: init setup
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Update APT cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install redis package
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 900  # 15mins
+        pkg:
+          - redis
+
+    - name: Stop and disable redis service
+      ansible.builtin.service:
+        name: redis-server
+        state: stopped
+        enabled: false
+
+    - name: Create redis.conf config file
+      ansible.builtin.copy:
+        content: |
+          protected-mode no
+          cluster-enabled yes
+          cluster-config-file /var/lib/redis/nodes.conf
+          cluster-node-timeout 3000
+        dest: /var/lib/redis/redis.conf
+        owner: root
+        group: root
+        mode: '0644'
