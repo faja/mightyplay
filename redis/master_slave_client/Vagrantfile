@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
   $script = <<-SCRIPT
     apt-get -y update
     apt-get -y install redis
-    apt-get -y ruby
+    apt-get -y install ruby
     gem install redis
     systemctl stop redis-server
     systemctl disable redis-server
