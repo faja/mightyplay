@@ -1,0 +1,34 @@
+Vagrant.configure("2") do |config|
+
+  $script = <<-SCRIPT
+    echo 192.168.61.100 h00.local h00 >> /etc/hosts
+    echo 192.168.61.101 h01.local h01 >> /etc/hosts
+    echo 192.168.61.102 h02.local h02 >> /etc/hosts
+  SCRIPT
+
+  config.vm.box = "generic/debian12"
+  config.vm.synced_folder "src/", "/src"
+  config.ssh.insert_key = false # use ~/.vagrant.d/insecure_private_key
+
+  config.vm.provision "shell",
+    inline: $script
+
+  nodes = [
+    "h00",
+    "h01",
+    "h02",
+  ]
+
+  nodes.each_with_index do |n,i|
+    config.vm.define n do |server|
+      server.vm.hostname = "#{n}.local"
+      server.vm.network "private_network", ip: "192.168.61.#{100+i}"
+      server.vm.provider "virtualbox" do |vb|
+        vb.name = "#{n}.local"
+        vb.memory = 1024
+        vb.cpus = 1
+      end
+    end
+  end
+
+end

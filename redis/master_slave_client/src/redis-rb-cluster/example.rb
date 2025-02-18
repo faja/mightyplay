@@ -33,5 +33,5 @@ end
     rescue => e
         puts "error #{e.to_s}"
     end
-    sleep 0.1
+    sleep 1.0
 }
