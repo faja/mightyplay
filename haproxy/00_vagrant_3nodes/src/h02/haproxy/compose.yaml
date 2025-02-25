@@ -1,0 +1,19 @@
+---
+name: haproxy
+
+services:
+  haproxy:
+    container_name: haproxy
+    image: haproxy:3.0.8
+    restart: unless-stopped
+    entrypoint:
+      - haproxy
+    command:
+      - -W
+      - -f
+      - /etc/haproxy/haproxy.cfg
+    ports:
+      - 8080:8080
+    volumes:
+      - /src/h02/haproxy/haproxy.cfg:/etc/haproxy/haproxy.cfg:ro
+      - /src/ssl.pem:/etc/haproxy/ssl.pem:ro

@@ -3,6 +3,7 @@
   hosts: all
   become: true
   gather_facts: true
+  tags: init
 
   roles:
     - docker
@@ -26,3 +27,20 @@
         name: haproxy
         tag: 3.0.8
         pull: not_present
+
+    - name: pull nginx docker image
+      tags: docker
+      become: true
+      community.docker.docker_image_pull:
+        name: nginx
+        tag: 1.27.4
+        pull: not_present
+
+- name: main run
+  hosts: all
+  become: true
+  gather_facts: true
+  tags: main
+
+  tasks:
+    - include_tasks: "{{ ansible_hostname }}.yaml"

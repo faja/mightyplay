@@ -1,0 +1,10 @@
+---
+- name: haproxy `docker compose up`
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: /src/h02/haproxy/
+
+- name: nginx `docker compose up`
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: /src/h02/nginx/
