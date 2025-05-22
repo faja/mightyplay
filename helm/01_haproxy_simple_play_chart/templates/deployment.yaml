@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy
+  labels:
+    name: haproxy
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  minReadySeconds: 5
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      name: haproxy
+  template:
+    metadata:
+      name: haproxy
+      labels:
+        name: haproxy
+      annotations:
+        checksum/configmap.yaml: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: haproxy
+          image: haproxy:3.0.10
+          #command:
+          #  - sleep
+          #args:
+          #  - infinity
+          command:
+            - haproxy
+          args:
+            - -W
+            - -f
+            - /etc/haproxy/haproxy.cfg
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+          volumeMounts:
+            - name: config
+              mountPath: /etc/haproxy
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: haproxy

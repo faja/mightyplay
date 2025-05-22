@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy
+data:
+  haproxy.cfg: |
+    {{- tpl (.Files.Get "files/haproxy.cfg") . | nindent 4 }}
