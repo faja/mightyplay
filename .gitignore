@@ -9,3 +9,6 @@ terraform.tfstate.backup
 
 # python
 .python-version
+
+# misc
+vendor/
