@@ -24,12 +24,11 @@ resource "grafana_data_source" "prometheus" {
   org_id      = "1"
 }
 
-#resource "grafana_folder" "xyzzy" {
-#  title = "Xyzzy"
-#}
-#
-#resource "grafana_dashboard" "xyzzy" {
-#  folder      = grafana_folder.xyzzy.id
-#  config_json = file("${path.module}/../dashboards/dashboard.json")
-#}
+resource "grafana_folder" "xyzzy" {
+  title = "Xyzzy"
+}
 
+resource "grafana_dashboard" "xyzzy" {
+  folder      = grafana_folder.xyzzy.id
+  config_json = file("${path.module}/dashboard.json")
+}
