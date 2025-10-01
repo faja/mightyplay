@@ -8,7 +8,118 @@
       "tag2"
    ],
    "templating": {
-      "list": [ ]
+      "list": [
+         {
+            "hide": 2,
+            "name": "PROMETHEUS_DS",
+            "query": "prometheus",
+            "regex": "/^prometheus$/",
+            "type": "datasource"
+         },
+         {
+            "hide": 0,
+            "label": "namespace",
+            "name": "namespace",
+            "query": "monitoring",
+            "type": "constant"
+         },
+         {
+            "current": {
+               "selected": false,
+               "text": [
+                  "job-A"
+               ],
+               "value": [
+                  "job-A"
+               ]
+            },
+            "hide": 0,
+            "includeAll": true,
+            "label": "JoB: ",
+            "multi": true,
+            "name": "jobs",
+            "options": [
+               {
+                  "selected": true,
+                  "text": "job-A",
+                  "value": "job-A"
+               },
+               {
+                  "selected": false,
+                  "text": "job-B",
+                  "value": "job-B"
+               },
+               {
+                  "selected": false,
+                  "text": "job-C",
+                  "value": "job-C"
+               }
+            ],
+            "query": "job-A : job-A,job-B : job-B,job-C : job-C",
+            "type": "custom"
+         },
+         {
+            "current": {
+               "selected": false,
+               "text": "__your_pod_name__",
+               "value": "__your_pod_name__"
+            },
+            "name": "pod2",
+            "options": [
+               {
+                  "selected": true,
+                  "text": "__your_pod_name__",
+                  "value": "__your_pod_name__"
+               }
+            ],
+            "query": "__your_pod_name__",
+            "type": "textbox"
+         },
+         {
+            "current": {
+               "selected": false,
+               "text": "XYZ",
+               "value": "XYZ"
+            },
+            "name": "pod3",
+            "options": [
+               {
+                  "selected": true,
+                  "text": "XYZ",
+                  "value": "XYZ"
+               }
+            ],
+            "query": "XYZ",
+            "type": "textbox"
+         },
+         {
+            "current": {
+               "selected": false,
+               "text": "default_value",
+               "value": "default_value"
+            },
+            "name": "pod4",
+            "options": [
+               {
+                  "selected": true,
+                  "text": "default_value",
+                  "value": "default_value"
+               }
+            ],
+            "query": "default_value",
+            "type": "textbox"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${PROMETHEUS_DS}"
+            },
+            "name": "app",
+            "query": "label_values(up{}, app)",
+            "refresh": 2,
+            "type": "query"
+         }
+      ]
    },
    "time": {
       "from": "now-1h",
