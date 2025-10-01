@@ -28,7 +28,11 @@ g.dashboard.variable.query.new('app')
 + g.dashboard.variable.query.refresh.onTime()
 
 ];
-local panels = [];
+
+local panels_row_1 = [];
+local panels_row_2 = [];
+local panels = g.util.grid.makeGrid(panels_row_1, 6, 4, 2)
+             + g.util.grid.makeGrid(panels_row_2, 6, 4, 2);
 
 // https://grafana.github.io/grafonnet/API/dashboard/index.html
 g.dashboard.new('my-awesome-dashboard')
