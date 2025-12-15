@@ -1,0 +1,64 @@
+---
+auth_enabled: false
+tracing:
+  enabled: false
+analytics:
+  reporting_enabled: false
+
+server:
+  http_listen_port: {{ loki_config_http_port | default(3100) }} # default, but I like to set it explicitly anyway
+  grpc_listen_port: {{ loki_config_grpc_port | default(9095) }} # default, but I like to set it explicitly anyway
+
+common:
+  path_prefix: /var/lib/loki
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
+# NOTE: loki config is pretty confusing for me, here are couple of notes for a
+#       - `chunks` - actual log data, log entries, this is not being indexed
+#       - `index`  - metadata abouth each log line, lables, etc - this is being indexed
+
+
+# NOTE: sotre vs object_store always confuses me, especially after some time
+#       not actively looking into loki config, anyway, how I understand it:
+#       - `store` - is the mechanism/protocol/way of storing index and chunks
+#                   this is always `tsdb`
+#       - `object_store` - is the underlying system where the files are being stored
+#                          so it can be filesystem, s3, etc...
+schema_config:
+  configs:
+  - from: 2025-07-13
+    schema: v13
+    store: tsdb
+    object_store: filesystem
+    index:
+      period: 24h
+      prefix: index_
+    chunks:
+      period: 24h
+
+storage_config:
+  use_thanos_objstore: true
+  object_store:
+    filesystem:
+      dir: /var/lib/loki/chunks
+  tsdb_shipper:
+    active_index_directory: /var/lib/loki/index
+    cache_location: /var/lib/loki/cache
+
+ingester:
+  chunk_encoding: snappy
+  wal:
+    dir: /var/lib/loki/wal
+    flush_on_shutdown: true
+
+compactor:
+  working_directory: /var/lib/loki/compactor
+  retention_enabled: true
+  delete_request_store: filesystem
+
+limits_config:
+  retention_period: {{ loki_config_retention | default(2160h) }} # 2160h = 90days
+  max_query_lookback: {{ loki_config_retention | default(2160h) }}
