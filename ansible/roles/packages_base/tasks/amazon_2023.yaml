@@ -1,0 +1,14 @@
+---
+
+- name: Update package cache
+  become: true
+  ansible.builtin.dnf:
+    update_cache: yes
+    cache_valid_time: 3600 # 1h
+  when: meta__run_package_cache_update | default(true)
+
+- name: Install 'base' packages
+  become: true
+  ansible.builtin.package:
+    name: "{{ packages_base[(ansible_distribution ~ '_' ~ ansible_distribution_major_version) | lower] }}"
+    state: latest
