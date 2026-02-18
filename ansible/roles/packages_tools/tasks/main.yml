@@ -1,0 +1,86 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+# included task is really just a cache update
+- include_tasks: "{{ (ansible_distribution ~ '_' ~ ansible_distribution_major_version) | lower }}.yaml"
+
+- name: Install 'tools' packages
+  become: true
+  ansible.builtin.package:
+    name: "{{ packages_tools[(ansible_distribution ~ '_' ~ ansible_distribution_major_version) | lower] }}"
+    state: latest
+
+- name: Install 'rc' files
+  become: true
+  ansible.builtin.copy:
+    src: files/{{ item.key }}
+    dest: "{{ item.value }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_dict: "{{ packages_tools_files }}"
+
+# {{{ sops
+- name: Check sops installed version
+  ansible.builtin.stat:
+    path: /usr/local/bin/sops-{{ packages_tools_sops_version }}
+  register: packages_tools_register_sops_version_installed
+
+- name: Download sops binary
+  become: true
+  ansible.builtin.get_url:
+    url: "{{ packages_tools_sops_download_url }}"
+    dest: "/usr/local/bin/sops-{{ packages_tools_sops_version }}"
+    mode: "0755"
+  when: not packages_tools_register_sops_version_installed.stat.exists
+
+- name: Create sops binary symlink
+  become: true
+  ansible.builtin.file:
+    src:  "/usr/local/bin/sops-{{ packages_tools_sops_version }}"
+    dest: "/usr/local/bin/sops"
+    state: link
+# }}}
+
+# {{{ age
+- name: Check age installed version
+  ansible.builtin.stat:
+    path: /usr/local/bin/age-{{ packages_tools_age_version }}
+  register: packages_tools_register_age_version_installed
+
+- name: Download age binary
+  become: true
+  ansible.builtin.get_url:
+    url: "{{ packages_tools_age_download_url }}"
+    dest: "/tmp/age.tar.gz"
+    mode: "0755"
+  when: not packages_tools_register_age_version_installed.stat.exists
+
+- name: Install age binary
+  become: true
+  ansible.builtin.shell: |
+    #!/bin/bash
+    tar -xf /tmp/age.tar.gz
+    rm -rf /tmp/age.tar.gz
+    mv -f /tmp/age/age        /usr/local/bin/age-{{ packages_tools_age_version }}
+    mv -f /tmp/age/age-keygen /usr/local/bin/age-keygen-{{ packages_tools_age_version }}
+    chown root:root /usr/local/bin/age-{{ packages_tools_age_version }}
+    chown root:root /usr/local/bin/age-keygen-{{ packages_tools_age_version }}
+    chmod 755 /usr/local/bin/age-{{ packages_tools_age_version }}
+    chmod 755 /usr/local/bin/age-keygen-{{ packages_tools_age_version }}
+  args:
+      chdir: /tmp
+  when: not packages_tools_register_age_version_installed.stat.exists
+
+- name: Create age binary symlink
+  become: true
+  ansible.builtin.file:
+    src:  /usr/local/bin/{{ item }}-{{ packages_tools_age_version }}
+    dest: /usr/local/bin/{{ item }}
+    state: link
+  loop:
+    - age
+    - age-keygen
+# }}}

@@ -1,5 +1,5 @@
-packages_base
-=============
+packages_cache_update
+=====================
 
 Updates package manager cache.
 This role ignores `meta__run_package_cache_update` variable.

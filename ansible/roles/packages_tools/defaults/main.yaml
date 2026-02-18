@@ -1,0 +1,49 @@
+---
+packages_tools:
+  amazon_2023:
+    - bind-utils    # provides dig
+    - git
+    - htop
+    - iproute
+    - jq
+    - lsof
+    - net-tools     # provides arp
+    - nmap          # provides ncat
+    - rsync
+    - screen
+    - tcpdump
+    - tree
+    - vim
+    - wget
+    - zsh
+  centos_7:
+    - bind-utils      # provides dig
+    - bridge-utils    # provides brctl, note: not in amazon_2023
+    - git
+    - htop
+    - iproute
+    - jq
+    - lsof
+    - net-tools       # provides arp
+    - ngrep           # note: not in amazon_2023
+    - nmap            # provides ncat
+    - python-requests # required by further ansible runs # note: not in amazon_2023
+    - rsync
+    - screen
+    - tcpdump
+    - tree
+    - vim
+    - wget
+    - zsh
+  debian_13:
+    - screen
+    - vim
+
+packages_tools_files:
+  vimrc: /root/.vimrc
+
+packages_tools_sops_version: 3.11.0 # 2025.09.28 # https://github.com/getsops/sops/releases
+packages_tools_sops_download_url: https://github.com/getsops/sops/releases/download/v{{ packages_tools_sops_version }}/sops-v{{ packages_tools_sops_version }}.linux.amd64
+
+packages_tools_age_version: 1.3.1 # 2025.12.28 # https://github.com/FiloSottile/age/releases
+packages_tools_age_download_url: https://github.com/FiloSottile/age/releases/download/v{{ packages_tools_age_version }}/age-v{{ packages_tools_age_version }}-linux-amd64.tar.gz

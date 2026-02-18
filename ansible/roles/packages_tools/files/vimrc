@@ -1,0 +1,21 @@
+set nocompatible
+set cursorline
+set number
+set relativenumber
+set hlsearch
+set incsearch
+set showcmd
+set wildmenu
+set ruler
+set encoding=utf-8
+
+" tabs
+set expandtab
+set smarttab
+set tabstop=2
+set shiftwidth=2
+
+syntax on
+colorscheme elflord
+
+set foldmethod=marker

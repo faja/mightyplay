@@ -1,0 +1,8 @@
+---
+
+- name: Update package cache
+  become: true
+  ansible.builtin.yum:
+    update_cache: yes
+    cache_valid_time: 3600 # 1h
+  when: meta__run_package_cache_update | default(true)
