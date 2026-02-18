@@ -1,0 +1,13 @@
+---
+- name: lfg
+  hosts: all
+  vars:
+    meta__run_platform_check: false
+    meta__run_package_cache_update: false
+
+  #tasks:
+  #  - ansible.builtin.debug:
+  #      msg: "1212 this is just a test"
+
+  roles:
+    - time
