@@ -1,0 +1,6 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+- include_tasks: "{{ (ansible_distribution ~ '_' ~ ansible_distribution_major_version) | lower }}.yaml"
