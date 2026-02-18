@@ -1,6 +1,7 @@
 ---
 packages_base:
   amazon_2023: [] # TODO:
+  centos_7: [] # TODO:
   debian_13:
     - ca-certificates
     - dbus

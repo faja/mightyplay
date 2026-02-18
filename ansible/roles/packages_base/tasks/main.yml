@@ -3,4 +3,11 @@
 - import_tasks: platform_check.yaml
   when: meta__run_platform_check | default(true)
 
+# this is really just cache update
 - include_tasks: "{{ (ansible_distribution ~ '_' ~ ansible_distribution_major_version) | lower }}.yaml"
+
+- name: Install 'base' packages
+  become: true
+  ansible.builtin.package:
+    name: "{{ packages_base[(ansible_distribution ~ '_' ~ ansible_distribution_major_version) | lower] }}"
+    state: latest
