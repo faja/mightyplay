@@ -1,0 +1,33 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+- name: Set UTC timezone
+  become: true
+  community.general.timezone:
+    name: "UTC"
+
+# NOTE: the symlink is being set by the above task automagically
+#       however if symlink is removed after
+#       it won't get recreated, hence I'm creating it explicitly
+- name: Set localtime symlink
+  become: true
+  ansible.builtin.file:
+    src: /usr/share/zoneinfo/UTC
+    dest: /etc/localtime
+    state: link
+    mode: '0777'
+
+- name: Install package
+  become: true
+  ansible.builtin.package:
+    name: chrony
+    state: latest
+
+- name: Start systemd service
+  become: true
+  ansible.builtin.systemd_service:
+    name: chronyd.service
+    state: started
+    enabled: true
