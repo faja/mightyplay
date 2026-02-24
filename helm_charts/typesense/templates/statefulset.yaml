@@ -6,8 +6,14 @@ metadata:
   labels:
     {{- include "typesense.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "typesense.fullname" . }}
   replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: 3
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  serviceName: {{ include "typesense.fullname" . }}
   selector:
     matchLabels:
       {{- include "typesense.selectorLabels" . | nindent 6 }}
