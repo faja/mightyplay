@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "typesense.fullname" . }}
+  labels:
+    {{- include "typesense.labels" . | nindent 4 }}
+data:
+  nodes: {{ include "typesense.nodes" . | quote }}
+  config.ini: |
+    [server]
+    data-dir = /data
+    api-port = 8108
+    peering-port = 8107
+    nodes = /config/nodes
+    # ssl-certificate = /secrets/server.crt # TODO
+    # ssl-certificate-key = /secrets/server.key # TODO
+    # api-key = # configured via env variable TYPESENSE_API_KEY

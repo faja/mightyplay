@@ -1,0 +1,27 @@
+---
+# -- default is helm release name
+fullnameOverride: ""
+
+replicaCount: 1
+
+# -- used for `--nodes` file content, default (`nil`) means, same value as `replicaCount`, set this for scaling up/down process
+clusterNodes: ~
+
+image:
+  repository: typesense/typesense
+  tag: "30.1"
+
+sleep: false
+
+apiKey: "xyz123"
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 512Mi
+
+storage:
+  className: standard
+  size: 1Gi
