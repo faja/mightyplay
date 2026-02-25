@@ -18,6 +18,6 @@ app.kubernetes.io/instance: {{ include "typesense.fullname" . }}
 {{- $replicas := int (default .Values.replicaCount .Values.clusterNodes) -}}
 {{- range $i := until $replicas -}}
 {{- if $i }},{{ end -}}
-{{ $fullname }}-{{ $i }}.{{ $fullname }}.{{ $.Release.Namespace }}.svc.cluster.local:8107:8108
+{{ $fullname }}-{{ $i }}.{{ $fullname }}-hl.{{ $.Release.Namespace }}.svc.cluster.local:8107:8108
 {{- end -}}
 {{- end }}

@@ -34,8 +34,5 @@ spec:
     - name: http
       port: 8108
       targetPort: http
-    - name: peering
-      port: 8107
-      targetPort: peering
   selector:
     {{- include "typesense.selectorLabels" . | nindent 4 }}
