@@ -3,28 +3,41 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "typesense.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "typesense.labels" . | nindent 4 }}
 spec:
+  serviceName: {{ include "typesense.fullname" . }}-hl
   replicas: {{ .Values.replicaCount }}
-  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      {{- include "typesense.selectorLabels" . | nindent 6 }}
   podManagementPolicy: Parallel
   updateStrategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
-  serviceName: {{ include "typesense.fullname" . }}
-  selector:
-    matchLabels:
-      {{- include "typesense.selectorLabels" . | nindent 6 }}
+  revisionHistoryLimit: 3
   template:
     metadata:
       labels:
         {{- include "typesense.selectorLabels" . | nindent 8 }}
     spec:
+      enableServiceLinks: false
+      securityContext:
+        fsGroup: {{ .Values.runAsUser }}
       containers:
         - name: typesense
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.runAsUser }}
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
           ports:
             - name: http
               containerPort: 8108
@@ -34,8 +47,8 @@ spec:
           command: ["sleep"]
           args: ["infinity"]
           {{- else }}
-          args:
-            - "--config=/config/config.ini"
+          command: ["/opt/typesense-server"]
+          args: ["--config=/config/config.ini"]
           {{- end }}
           env:
             - name: TYPESENSE_API_KEY
