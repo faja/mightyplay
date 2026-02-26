@@ -1,0 +1,12 @@
+---
+a: a
+{{- /* */}}
+b: b
+
+aaa:
+  - abc
+  {{- if .Values.enableFeatures }}
+  - {{ join "," .Values.enableFeatures }}
+  {{- end }}
+
+bbb: bbb

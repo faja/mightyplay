@@ -3,12 +3,22 @@
   gather_facts: false
   hosts: all
 
-  tasks:
-    - name: test template
-      ansible.builtin.template:
-        src: templates/test.yaml.j2
-        dest: /tmp/test.yaml
-      vars:
-        test_xxx:
-          - a
-          - b
+  vars:
+    users:
+      user1:
+        property1: ok
+      user2:
+        property1: ok2
+  roles:
+    - roleABC
+      #tasks:
+      #  - name: test template
+      #    ansible.builtin.template:
+      #      src: templates/test.yaml.j2
+      #      dest: /tmp/{{ item.key }}.yaml
+      #    with_dict: "{{ test_xxx }}"
+      #    vars:
+      #      test_xxx:
+      #        a:
+      #          path: test
+      #        b: ~

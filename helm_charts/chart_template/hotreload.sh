@@ -5,3 +5,6 @@ reflex -r '.' -- sh -c 'echo {} && echo && helm template XXX . > /tmp/m.yaml'
 #   tail -f /tmp/m.yaml
 # or even something like:
 #   cd /tmp && reflex -g m.yaml -- k8s_get_resource_from_manifest.sh ${KIND} ${NAME} {}
+#
+# if you prefer just a simple hotreload && print
+#   reflex -r '.' -- helm template xxx .

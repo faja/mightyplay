@@ -1,4 +1,2 @@
 ---
-test: "{{ "{{ .Name }}" }}"
-
-test2: {{ test_xxx | join(",")}}
+test: {{ item.value.path | default('/var/lib/docker-compose/{}'.format(item.key)) }}

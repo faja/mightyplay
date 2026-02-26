@@ -1,0 +1,5 @@
+---
+- name: test task
+  ansible.builtin.debug:
+    msg: "item: {{ item.key }}, prop1: {{ item.value.property1 }}"
+  loop: "{{ users | dict2items }}"

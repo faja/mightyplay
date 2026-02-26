@@ -3,4 +3,4 @@ apiVersion: v2
 name: typesense
 description: Typesense Helm chart
 version: 0.1.0
-appVersion: 30.1
+appVersion: "30.1"
