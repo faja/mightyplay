@@ -1,0 +1,9 @@
+---
+- name: reload prometheus config
+  become: true
+  listen: prometheus_config_reload
+  community.docker.docker_container:
+    name: prometheus
+    state: stopped    # send signal but don't remove container
+    force_kill: true  # use kill signal instead of stop
+    kill_signal: HUP  # send HUP instead of kill

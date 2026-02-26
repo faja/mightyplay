@@ -1,0 +1,67 @@
+---
+
+- import_tasks: platform_check.yaml
+
+- name: Create grafana group
+  become: true
+  ansible.builtin.group:
+    name: grafana
+    state: present
+    gid: "{{ grafana_gid }}"
+    system: true
+
+- name: Create grafana user
+  become: true
+  ansible.builtin.user:
+    name: grafana
+    state: present
+    uid: "{{ grafana_uid }}"
+    group: grafana
+    create_home: false
+    home: /var/lib/grafana
+    shell: /user/sbin/nologin
+    system: true
+
+- name: Create grafana directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: '0750'
+  with_items:
+    - /etc/grafana
+    - /var/lib/grafana
+    - /var/lib/docker-compose/grafana
+
+#- name: Install grafana.ini
+#  become: true
+#  ansible.builtin.template:
+#    src: templates/grafana.ini.j2
+#    dest: /etc/grafana/grafana.ini
+#    owner: grafana
+#    group: grafana
+#    mode: '0644'
+#  notify: prometheus_config_reload
+
+- name: Install compose.yaml
+  become: true
+  ansible.builtin.template:
+    src: templates/compose.yaml.j2
+    dest: /var/lib/docker-compose/grafana/compose.yaml
+    owner: grafana
+    group: grafana
+    mode: '0644'
+
+- name: Pull an image
+  become: true
+  community.docker.docker_image_pull:
+    name: "{{ grafana_image_name }}"
+    tag: "{{ grafana_image_tag }}"
+    pull: not_present
+
+- name: Run `docker compose up`
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: /var/lib/docker-compose/grafana

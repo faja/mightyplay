@@ -1,0 +1,8 @@
+---
+
+- name: Check if running on supported platform
+  ansible.builtin.assert:
+    that:
+      # please remember, this is jinja not python
+      - ansible_os_family == "Debian"
+      - ansible_distribution_release == "bookworm"

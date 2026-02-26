@@ -1,0 +1,6 @@
+---
+grafana_image_name: grafana/grafana
+grafana_image_tag: 11.4.0  # 2024.12.05 # https://github.com/grafana/grafana/releases
+grafana_port: 3000
+grafana_uid: 901
+grafana_gid: 901

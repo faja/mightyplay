@@ -1,0 +1,27 @@
+---
+name: grafana
+
+# TODO: variablise this
+networks:
+  prometheus:
+    external: true
+
+services:
+  grafana:
+    container_name: grafana
+    image: {{ grafana_image_name }}:{{ grafana_image_tag }}
+    restart: unless-stopped
+    user: {{ grafana_uid }}:{{ grafana_gid }}
+    networks:
+      - prometheus
+    ports:
+      - {{ grafana_port }}:3000
+    volumes:
+      #- /etc/grafana/:/etc/grafana/:ro
+      - /var/lib/grafana:/var/lib/grafana:rw
+    logging:
+      options:
+        tag: "{{ "{{ .Name }}" }}"
+        labels: stack
+    labels:
+      stack: grafana

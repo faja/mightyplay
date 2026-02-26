@@ -1,6 +1,7 @@
 ---
 - name: lfg
   hosts: all
+  gather_facts: true
   vars:
     meta__run_platform_check: false
     meta__run_package_cache_update: false
@@ -10,4 +11,8 @@
   #      msg: "1212 this is just a test"
 
   roles:
-    - time
+    #- packages_cache_update
+    #- packages_base
+    #- packages_tools
+    #- time
+    - hostname

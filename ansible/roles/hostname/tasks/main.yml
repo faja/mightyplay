@@ -1,0 +1,23 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+- name: Set hostname
+  become: true
+  ansible.builtin.hostname:
+    name: "{{ hostname_full }}"
+
+- name: Ensure hostname is in /etc/hosts
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/hosts"
+    regexp: "^127.0.1.1"
+    line: "127.0.1.1 {{ hostname_full }} {{ hostname_full | split('.') | first }}"
+
+- name: Ensure hostname is in /etc/hosts
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/hosts"
+    regexp: "^127.0.2.1"
+    state: absent

@@ -1,7 +1,12 @@
 # roles
-## post-install roles
+
 ## base roles
+- hostname
+- packages_base
+- packages_cache_update
+- packages_tools
 - time
+
 ## roles
 
 # meta__ vars
