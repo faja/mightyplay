@@ -1,0 +1,16 @@
+---
+nftables_trust_all: true
+nftables_trusted_ips: []
+
+nftables_table_filter_chain_input_rules: []
+nftables_table_filter_chain_forward_policy: drop
+  # NOTE:
+  #  for k8s with kube-proxy, forward policy should be accept
+  #  for k8s with cilium, forward policy should be drop - TO BE VERIFIED
+
+# TODO LATER - K8S COMPONENTS
+# 6443        - k8s api        - control plane nodes
+# 10250       - kubelete api   - worker nodes
+# 2379-2380   - etcd           - control plane nodes
+# 30000-32767 - nodeport range - worker nodes - if NodePort is in use
+# +plus whatever custom CNI needs

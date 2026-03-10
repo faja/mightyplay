@@ -11,8 +11,8 @@
   #      msg: "1212 this is just a test"
 
   roles:
-    #- packages_cache_update
+    - packages_cache_update
     #- packages_base
     #- packages_tools
     #- time
-    - hostname
+    - nftables

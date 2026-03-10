@@ -1,0 +1,38 @@
+# managed by ansible
+
+table inet filter        # create if not exists
+flush table inet filter  # flush only `filter`, leave `k8s-*` tables untouched
+
+table inet filter {
+    chain input {
+        type filter hook input priority 0
+        policy drop
+
+        iif lo accept
+        ct state invalid drop
+        ct state established,related accept
+
+        {% for ip in nftables_trusted_ips %}
+        ip saddr {{ ip }} icmp type echo-request accept
+        ip saddr {{ ip }} tcp dport 22 accept
+        {% endfor %}
+        {% if nftables_trust_all %}
+        icmp type echo-request accept
+        tcp dport 22 accept
+        {% endif %}
+
+        {% for rule in nftables_table_filter_chain_input_rules %}
+        {{ rule }}
+        {% endfor %}
+    }
+
+    chain forward {
+        type filter hook forward priority filter
+        policy {{ nftables_table_filter_chain_forward_policy }}
+    }
+
+    chain output {
+        type filter hook output priority filter
+        policy accept
+    }
+}

@@ -1,0 +1,29 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+- name: Install 'nftables' package
+  become: true
+  ansible.builtin.package:
+    name: nftables
+    state: latest
+
+- name: Install nftables.conf
+  become: true
+  ansible.builtin.template:
+    src: templates/nftables.conf.j2
+    dest: /etc/nftables.conf
+    owner: root
+    group: root
+    mode: '0644'
+    trim_blocks: true
+    lstrip_blocks: true
+  notify: nftables_config_reload
+
+- name: Start systemd service
+  become: true
+  ansible.builtin.systemd_service:
+    name: nftables.service
+    state: started
+    enabled: true
