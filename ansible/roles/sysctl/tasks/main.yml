@@ -1,0 +1,46 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+- name: Install custom sysctl config - custom.conf
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/42-custom.conf
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      # managed by ansible
+      {% for key,value in sysctl_custom_settings.items() %}
+      {{ key }} = {{ value }}
+      {% endfor %}
+  register: sysctl_register_custom
+  when: sysctl_custom_enabled and sysctl_custom_settings
+
+- name: Install custom sysctl config - k8s.conf
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/42-k8s.conf
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      # managed by ansible
+      {% for key,value in sysctl_k8s_settings.items() %}
+      {{ key }} = {{ value }}
+      {% endfor %}
+  register: sysctl_register_k8s
+  when: sysctl_k8s_enabled and sysctl_k8s_settings
+
+- name: Execute systemctl -p custom.conf
+  become: true
+  ansible.builtin.command:
+    cmd: /sbin/sysctl -p /etc/sysctl.d/42-custom.conf
+  when: sysctl_register_custom.changed
+
+- name: Execute systemctl -p k8s.conf
+  become: true
+  ansible.builtin.command:
+    cmd: /sbin/sysctl -p /etc/sysctl.d/42-k8s.conf
+  when: sysctl_register_k8s.changed

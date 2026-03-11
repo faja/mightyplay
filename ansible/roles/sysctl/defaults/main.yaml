@@ -1,0 +1,18 @@
+---
+sysctl_custom_enabled: true
+sysctl_custom_settings: {}
+  # example
+  #net.ipv4.tcp_tw_recycle: 0
+  #net.ipv4.tcp_tw_reuse: 0
+
+# TODO: bare metal settings for prod environment
+
+sysctl_k8s_enabled: true
+sysctl_k8s_settings:
+  net.ipv4.ip_forward: 1
+  net.bridge.bridge-nf-call-iptables: 1  # only needed if kube-proxy is in place
+  net.bridge.bridge-nf-call-ip6tables: 1 # only needed if kube-proxy is in place
+  fs.inotify.max_user_watches: 524288
+  fs.inotify.max_user_instances: 1024
+  vm.oversommit_memory: 1
+
