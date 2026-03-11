@@ -1,0 +1,17 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+- name: Remove swapfile from /etc/fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: '^/swapfile.*\n?'
+    state: absent
+  register: swap_register_etc_fstab
+
+- name: Execute swapoff -a
+  become: true
+  ansible.builtin.command:
+    cmd: /sbin/swapoff -a
+  when: swap_register_etc_fstab.changed
