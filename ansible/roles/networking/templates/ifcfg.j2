@@ -1,0 +1,12 @@
+DEVICE={{ item.interface }}
+NAME={{ item.interface }}
+TYPE=Ethernet
+BOOTPROTO=static
+ONBOOT=yes
+IPADDR={{ item.address }}
+NETMASK={{ item.netmask | default(networking_static_config.template_defaults.netmask) }}
+GATEWAY={{ item.gateway | default(networking_static_config.template_defaults.gateway) }}
+NM_CONTROLLED=no
+{% for ip in item.dns | default(networking_static_config.template_defaults.dns) | split(" ") %}
+DNS{{ loop.index }}={{ ip }}
+{% endfor %}

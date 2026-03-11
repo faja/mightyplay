@@ -1,0 +1,16 @@
+---
+networking_static_config:
+  use_string: false
+  string: ~
+  destination: /tmp/interfaces
+  use_template: false
+  template_src: interfaces.j2 # interfaces.j2 (debian) or ifcfg.j2 (amazon)
+  template_defaults:
+    gateway: 192.168.1.1
+    dns: 1.1.1.1 8.8.8.8
+  template_vars: []
+    # example values
+    #- interface: eth0
+    #  address: 192.168.1.50/24
+    #  gateway: 192.168.1.1
+    #  dns: 1.1.1.1 8.8.8.8

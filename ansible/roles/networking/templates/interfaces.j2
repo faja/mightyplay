@@ -1,0 +1,10 @@
+auto lo
+iface lo inet loopback
+{% for i in networking_static_config.template_vars %}
+
+auto {{ i.interface }}
+iface {{ i.interface }} inet static
+  address {{ i.address }}
+  gateway {{ i.gateway | default(networking_static_config.template_defaults.gateway) }}
+  dns-nameservers {{ i.dns | default(networking_static_config.template_defaults.dns) }}
+{% endfor %}

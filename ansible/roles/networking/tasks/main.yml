@@ -1,0 +1,37 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+- name: Install static networking configuration file (from string)
+  become: true
+  ansible.builtin.copy:
+    content: "{{ networking_static_config.string }}"
+    dest: "{{ networking_static_config.destination }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: networking_static_config.use_string
+
+- name: Install static networking configuration file (from template)
+  become: true
+  ansible.builtin.template:
+    src: interfaces.j2
+    #dest: /etc/network/interfaces # for testing purposes: /tmp/interfaces
+    dest: /tmp/interfaces
+    owner: root
+    group: root
+    mode: 0644
+  when: networking_static_config.use_template and networking_static_config.template_src == "interfaces.j2"
+
+- name: Install static networking configuration file (from template)
+  become: true
+  ansible.builtin.template:
+    src: ifcfg.j2
+    #dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.intrrface }} # for testing purposes: /tmp/ifcfg-{{ item.interface }}
+    dest: /tmp/ifcfg-{{ item.interface }}
+    owner: root
+    group: root
+    mode: 0644
+  loop: "{{ networking_static_config.template_vars }}"
+  when: networking_static_config.use_template and networking_static_config.template_src == "ifcfg.j2"
