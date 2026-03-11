@@ -16,6 +16,7 @@ packages_tools:
     - vim
     - wget
     - zsh
+  # TODO: clean this up, it's here just for reference
   centos_7:
     - bind-utils      # provides dig
     - bridge-utils    # provides brctl, note: not in amazon_2023
