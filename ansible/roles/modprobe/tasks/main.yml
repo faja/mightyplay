@@ -1,0 +1,38 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+- name: Ensure kernel modules are loaded on boot - custom.conf
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/custom.conf
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      {% for module in modprobe_custom_modules %}
+      {{ module }}
+      {% endfor %}
+  when: modprobe_custom_enabled and modprobe_custom_modules
+
+- name: Ensure kernel modules are loaded on boot - k8s.conf
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/k8s.conf
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      {% for module in modprobe_k8s_modules %}
+      {{ module }}
+      {% endfor %}
+  when: modprobe_k8s_enabled and modprobe_k8s_modules
+
+- name: Load kernel modules now
+  become: true
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ modprobe_custom_modules + modprobe_k8s_modules }}"
+  when: modprobe_load_on_runtime

@@ -1,0 +1,8 @@
+---
+modprobe_custom_enabled: true
+modprobe_custom_modules: []
+modprobe_k8s_enabled: true
+modprobe_k8s_modules:
+  - overlay
+  - br_netfilter
+modprobe_load_on_runtime: true
