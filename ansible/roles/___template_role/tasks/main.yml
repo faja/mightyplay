@@ -1,0 +1,8 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+- name: lfg
+  ansible.builtin.debug:
+    msg: lfg
