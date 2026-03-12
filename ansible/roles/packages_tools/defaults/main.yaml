@@ -37,6 +37,8 @@ packages_tools:
     - wget
     - zsh
   debian_13:
+    - curl
+    - gnupg
     - screen
     - vim
 

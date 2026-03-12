@@ -1,0 +1,33 @@
+---
+
+- import_tasks: platform_check.yaml
+  when: meta__run_platform_check | default(true)
+
+# included task is really just a cache update
+- include_tasks: "{{ (ansible_distribution ~ '_' ~ ansible_distribution_major_version) | lower }}.yaml"
+
+- name: Install containerd
+  become: true
+  ansible.builtin.package:
+    name: containerd.io # from docker repo
+    state: latest
+
+- name: Containerd config
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/containerd/config.toml
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      version = 3
+      [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.runc.options]
+      SystemdCgroup = true
+  notify: containerd_config_restart
+
+- name: Start systemd service
+  become: true
+  ansible.builtin.systemd_service:
+    name: containerd.service
+    state: started
+    enabled: true

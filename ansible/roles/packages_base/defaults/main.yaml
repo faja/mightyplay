@@ -2,6 +2,7 @@
 packages_base:
   amazon_2023: [] # TODO:
   debian_13:
+    - apt-transport-https
     - ca-certificates
     - dbus
     - man
