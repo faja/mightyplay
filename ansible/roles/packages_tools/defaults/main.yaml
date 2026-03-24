@@ -16,7 +16,6 @@ packages_tools:
     - vim
     - wget
     - zsh
-  # TODO: clean this up, it's here just for reference
   centos_7:
     - bind-utils      # provides dig
     - bridge-utils    # provides brctl, note: not in amazon_2023
@@ -45,7 +44,7 @@ packages_tools:
 packages_tools_files:
   vimrc: /root/.vimrc
 
-packages_tools_sops_version: 3.11.0 # 2025.09.28 # https://github.com/getsops/sops/releases
+packages_tools_sops_version: 3.12.2 # 2026.03.18 # https://github.com/getsops/sops/releases
 packages_tools_sops_download_url: https://github.com/getsops/sops/releases/download/v{{ packages_tools_sops_version }}/sops-v{{ packages_tools_sops_version }}.linux.amd64
 
 packages_tools_age_version: 1.3.1 # 2025.12.28 # https://github.com/FiloSottile/age/releases

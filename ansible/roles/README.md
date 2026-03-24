@@ -1,3 +1,51 @@
+# migration
+
+
+name                  |infra        |play
+----------------------|-------------|----
+alertmanager          | -           | TODO
+alloy                 | -           | TODO
+**asdocker**          | **OK**      | **n/a**
+**aswebsite**         | **OK**      | **n/a**
+blackbox_exporter     | -           | TODO
+cadvisor              | -           | TODO
+containerd            | -           | OK
+debian                | -           | TODO
+deepluj               | -           | TODO
+docker                | -           | TODO
+epel                  | -           | TODO
+grafana               | -           | TODO
+**hostname**          | **IN SYNC** | **IN SYNC**
+k8s                   | -           | OK
+ldap                  | -           | TODO
+loki                  | -           | TODO
+modprobe              | -           | OK
+network_static_config | -           | TODO
+networking            | -           | OK
+networking            | -           | TODO
+nftables              | -           | OK
+node_exporter         | -           | TODO
+packages_base         | -           | OK
+packages_base         | -           | TODO
+packages_cache_update | -           | OK
+**packages_tools**    | **IN SYNC** | **IN SYNC**
+portainer             | -           | TODO
+prometheus            | -           | TODO
+registry              | -           | **n/a**
+selinux               | -           | TODO
+**sentry**            | **OK**      | **n/a**
+sshd                  | -           | TODO
+swap                  | -           | OK
+swap                  | -           | TODO
+sysctl                | -           | OK
+sysctl                | -           | TODO
+**time**              | **IN SYNC** | **IN SYNC**
+traefik               | -           | TODO
+users                 | -           | TODO
+webhook               | -           | TODO
+**yake**              | **OK**      | **n/a**
+**yopass**            | **OK**      | **n/a**
+
 # roles
 
 ## base roles
