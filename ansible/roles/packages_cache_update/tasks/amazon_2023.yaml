@@ -4,4 +4,4 @@
   become: true
   ansible.builtin.dnf:
     update_cache: yes
-    cache_valid_time: 3600 # 1h
+    # cache_valid_time: 3600 # 1h # not supported by dnf module :(
