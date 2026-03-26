@@ -19,9 +19,7 @@ k8s                       | -           | OK
 ldap                      | -           | TODO
 loki                      | -           | TODO
 modprobe                  | -           | OK
-network_static_config     | -           | TODO
-networking                | -           | OK
-networking                | -           | TODO
+**networking**            | **IN SYNC** | **IN SYNC**
 nftables                  | -           | OK
 node_exporter             | -           | TODO
 **packages_base**         | **IN SYNC** | **IN SYNC**
@@ -35,8 +33,7 @@ selinux                   | -           | TODO
 sshd                      | -           | TODO
 swap                      | -           | OK
 swap                      | -           | TODO
-sysctl                    | -           | OK
-sysctl                    | -           | TODO
+**sysctl**                | **IN SYNC** | **IN SYNC**
 **time**                  | **IN SYNC** | **IN SYNC**
 traefik                   | -           | TODO
 users                     | -           | TODO
