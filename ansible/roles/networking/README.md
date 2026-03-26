@@ -4,5 +4,6 @@ networking
 Configures static network configuration
 
 ### supported platforms
-- Amazon 2023
+- Amazon Linux 2023
+- CentOS 7
 - Debian 13
