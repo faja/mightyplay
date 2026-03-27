@@ -18,7 +18,7 @@ grafana                   | -           | TODO
 k8s                       | -           | OK
 ldap                      | -           | TODO
 loki                      | -           | TODO
-modprobe                  | -           | OK
+**modprobe**              | **IN SYNC** | **IN SYNC**
 **networking**            | **IN SYNC** | **IN SYNC**
 nftables                  | -           | OK
 node_exporter             | -           | TODO
@@ -31,8 +31,7 @@ registry                  | -           | **n/a**
 selinux                   | -           | TODO
 **sentry**                | **OK**      | **n/a**
 sshd                      | -           | TODO
-swap                      | -           | OK
-swap                      | -           | TODO
+**swap**                  | **IN SYNC** | **IN SYNC**
 **sysctl**                | **IN SYNC** | **IN SYNC**
 **time**                  | **IN SYNC** | **IN SYNC**
 traefik                   | -           | TODO
